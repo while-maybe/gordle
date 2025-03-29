@@ -7,5 +7,6 @@ import (
 
 func main() {
 	g := gordle.New(os.Stdin)
+
 	g.Play()
 }
