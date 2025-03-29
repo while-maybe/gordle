@@ -59,6 +59,18 @@ func TestGameValidateGuess(t *testing.T) {
 			word:     []rune("SHOULDFAIL"),
 			expected: errInvalidWordLength,
 		},
+		"empty string": {
+			word:     []rune(""),
+			expected: errInvalidWordLength,
+		},
+		"empty slice": {
+			word:     []rune{},
+			expected: errInvalidWordLength,
+		},
+		"nil": {
+			word:     nil,
+			expected: errInvalidWordLength,
+		},
 	}
 
 	for name, tc := range tt {
