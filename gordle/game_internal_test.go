@@ -102,6 +102,10 @@ func TestGameSplitToUppercaseCharacters(t *testing.T) {
 			word: "mIxEd",
 			want: []rune{'M', 'I', 'X', 'E', 'D'},
 		},
+		"CAPITALS": {
+			word: "CAPITALS",
+			want: []rune{'C', 'A', 'P', 'I', 'T', 'A', 'L', 'S'},
+		},
 	}
 
 	for name, tc := range tt {
