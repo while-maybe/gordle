@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 )
 
 // Game holds all the information we need to play a game of gordle.
@@ -45,7 +46,7 @@ func (g *Game) ask() []rune {
 			continue
 		}
 
-		guess := []rune(string(playerInput))
+		guess := splitToUppercaseCharacters(string(playerInput))
 
 		err = g.validateGuess(guess)
 		if err != nil {
@@ -65,4 +66,9 @@ func (g *Game) validateGuess(guess []rune) error {
 		return fmt.Errorf("expected %d, got %d, %w", solutionLength, len(guess), errInvalidWordLength)
 	}
 	return nil
+}
+
+// splitToUppercaseCharacters is a naive implementation to turn a string into a list of characters.
+func splitToUppercaseCharacters(input string) []rune {
+	return []rune(strings.ToUpper(input))
 }

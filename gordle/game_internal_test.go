@@ -84,3 +84,33 @@ func TestGameValidateGuess(t *testing.T) {
 		})
 	}
 }
+
+func TestGameSplitToUppercaseCharacters(t *testing.T) {
+	tt := map[string]struct {
+		word string
+		want []rune
+	}{
+		"lower": {
+			word: "lower",
+			want: []rune{'L', 'O', 'W', 'E', 'R'},
+		},
+		"Title": {
+			word: "Title",
+			want: []rune{'T', 'I', 'T', 'L', 'E'},
+		},
+		"mIxEd": {
+			word: "mIxEd",
+			want: []rune{'M', 'I', 'X', 'E', 'D'},
+		},
+	}
+
+	for name, tc := range tt {
+		t.Run(name, func(t *testing.T) {
+			got := splitToUppercaseCharacters(tc.word)
+
+			if !slices.Equal(got, tc.want) {
+				t.Errorf("got = %v, want %v", string(got), string(tc.want))
+			}
+		})
+	}
+}
