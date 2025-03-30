@@ -5,19 +5,24 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"slices"
 	"strings"
 )
 
 // Game holds all the information we need to play a game of gordle.
 type Game struct {
-	reader *bufio.Reader
+	reader      *bufio.Reader
+	solution    []rune
+	maxAttempts int
 }
 
 // New returns a game, which can be used to Play!
-func New(playerInput io.Reader) *Game {
+func New(playerInput io.Reader, solution string, maxAttempts int) *Game {
 
 	g := &Game{
-		reader: bufio.NewReader(playerInput),
+		reader:      bufio.NewReader(playerInput),
+		solution:    splitToUppercaseCharacters(solution),
+		maxAttempts: maxAttempts,
 	}
 
 	return g
@@ -27,17 +32,21 @@ func New(playerInput io.Reader) *Game {
 func (g *Game) Play() {
 	fmt.Println("Welcome to Gordle!")
 
-	// ask for a valid word
-	guess := g.ask()
+	for currentAttempt := 1; currentAttempt <= g.maxAttempts; currentAttempt++ {
 
-	fmt.Printf("Your guess is: %s\n", string(guess))
+		// ask for a valid word
+		guess := g.ask()
+		if slices.Equal(guess, g.solution) {
+			fmt.Printf("🎉 You won! you found it in %d guess(es)! The word was: %s\n", currentAttempt, string(g.solution))
+			return
+		}
+	}
+	fmt.Printf("😞 You've lost! The solution was: %s. \n", string(g.solution))
 }
-
-const solutionLength = 5
 
 // ask reads input until a valid suggestion is made (and returned).
 func (g *Game) ask() []rune {
-	fmt.Printf("Enter a %d-digit character guess:\n", solutionLength)
+	fmt.Printf("Enter a %d-digit character guess:\n", len(g.solution))
 
 	for {
 		playerInput, _, err := g.reader.ReadLine()
@@ -62,8 +71,8 @@ var errInvalidWordLength = fmt.Errorf("invalid guess, word doesn't have the same
 
 // validateGuess ensures the guess is valid enough.
 func (g *Game) validateGuess(guess []rune) error {
-	if len(guess) != solutionLength {
-		return fmt.Errorf("expected %d, got %d, %w", solutionLength, len(guess), errInvalidWordLength)
+	if len(guess) != len(g.solution) {
+		return fmt.Errorf("expected %d, got %d, %w", len(g.solution), len(guess), errInvalidWordLength)
 	}
 	return nil
 }
