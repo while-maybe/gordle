@@ -15,3 +15,6 @@ clean:
 
 test:
 	@go test ./... -vet=off
+
+bench:
+	@go test ./... -run=^$ -bench=. -benchmem
