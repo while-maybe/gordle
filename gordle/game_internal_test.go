@@ -44,43 +44,43 @@ func TestGameAsk(t *testing.T) {
 
 func TestGameValidateGuess(t *testing.T) {
 	tt := map[string]struct {
-		word     []rune
-		expected error
+		word []rune
+		want error
 	}{
 		"nominal": {
-			word:     []rune("GUESS"),
-			expected: nil,
+			word: []rune("GUESS"),
+			want: nil,
 		},
 		"too short": {
-			word:     []rune("HI"),
-			expected: errInvalidWordLength,
+			word: []rune("HI"),
+			want: errInvalidWordLength,
 		},
 		"too long": {
-			word:     []rune("SHOULDFAIL"),
-			expected: errInvalidWordLength,
+			word: []rune("SHOULDFAIL"),
+			want: errInvalidWordLength,
 		},
 		"empty string": {
-			word:     []rune(""),
-			expected: errInvalidWordLength,
+			word: []rune(""),
+			want: errInvalidWordLength,
 		},
 		"empty slice": {
-			word:     []rune{},
-			expected: errInvalidWordLength,
+			word: []rune{},
+			want: errInvalidWordLength,
 		},
 		"nil": {
-			word:     nil,
-			expected: errInvalidWordLength,
+			word: nil,
+			want: errInvalidWordLength,
 		},
 	}
 
 	for name, tc := range tt {
 		t.Run(name, func(t *testing.T) {
 			// only the validateGuess is being tested so New take nil/0 args
-			g := New(nil, "", 0)
+			g := New(nil, "XXXXX", 0)
 
 			err := g.validateGuess(tc.word)
-			if !errors.Is(err, tc.expected) {
-				t.Errorf("%c, expected %q, got %q", tc.word, tc.expected, err)
+			if !errors.Is(err, tc.want) {
+				t.Errorf("%c, expected %q, got %q", tc.word, tc.want, err)
 			}
 		})
 	}
