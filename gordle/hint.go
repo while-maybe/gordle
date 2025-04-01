@@ -32,8 +32,8 @@ type feedback []hint
 // It is used only to benchmark it against the strings.Builder version.
 func (fb feedback) StringConcat() string {
 	var output string
-	for _, hint := range fb {
-		output += hint.String()
+	for _, h := range fb {
+		output += h.String()
 	}
 	return output
 }
@@ -41,8 +41,8 @@ func (fb feedback) StringConcat() string {
 // String implements the Stringer interface for a slice of hints.
 func (fb feedback) String() string {
 	sb := strings.Builder{}
-	for _, hint := range fb {
-		sb.WriteString(hint.String())
+	for _, h := range fb {
+		sb.WriteString(h.String())
 	}
 	return sb.String()
 }
