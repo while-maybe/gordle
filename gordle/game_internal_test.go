@@ -119,3 +119,61 @@ func TestGameSplitToUppercaseCharacters(t *testing.T) {
 		})
 	}
 }
+
+func TestComputeFeedback(t *testing.T) {
+	tt := map[string]struct {
+		guess    string
+		solution string
+		fb       feedback
+	}{
+		"good guess": {
+			solution: "hello",
+			guess:    "hello",
+			fb:       feedback{correctPosition, correctPosition, correctPosition, correctPosition, correctPosition},
+		},
+		"1 wrong char guess": {
+			solution: "hello",
+			guess:    "hlllo",
+			fb:       feedback{correctPosition, absentCharacter, correctPosition, correctPosition, correctPosition},
+		},
+		"2 wrong char guess": {
+			solution: "hello",
+			guess:    "shall",
+			fb:       feedback{absentCharacter, wrongPosition, absentCharacter, correctPosition, wrongPosition},
+		},
+		"3 wrong char guess": {
+			solution: "hello",
+			guess:    "shall",
+			fb:       feedback{absentCharacter, wrongPosition, absentCharacter, correctPosition, wrongPosition},
+		},
+		"4 wrong char guess": {
+			solution: "hello",
+			guess:    "hleol",
+			fb:       feedback{correctPosition, wrongPosition, wrongPosition, wrongPosition, wrongPosition},
+		},
+		"5 wrong char guess": {
+			solution: "hello",
+			guess:    "lloeh",
+			fb:       feedback{wrongPosition, wrongPosition, wrongPosition, wrongPosition, wrongPosition},
+		},
+		"no guess": {
+			solution: "hello",
+			guess:    "xxxxx",
+			fb:       feedback{absentCharacter, absentCharacter, absentCharacter, absentCharacter, absentCharacter},
+		},
+		"empty": {
+			solution: "",
+			guess:    "",
+			fb:       feedback{},
+		},
+	}
+	for name, tc := range tt {
+		t.Run(name, func(t *testing.T) {
+			got := computeFeedback([]rune(tc.guess), []rune(tc.solution))
+
+			if !got.Equal(tc.fb) {
+				t.Errorf("guess: %q, got the wrong feedback, expected %v, got %v", tc.guess, tc.fb, got)
+			}
+		})
+	}
+}
