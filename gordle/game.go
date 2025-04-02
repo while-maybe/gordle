@@ -110,12 +110,13 @@ func computeFeedback(guess, solution []rune) feedback {
 		}
 
 		for charPosInSolution, _ := range solution {
+			// check if the pos of the solution char has already been used
+			if used[charPosInSolution] {
+				continue
+			}
+
 			// if the guess character matches the one in solution (but not in same position as the solution character)
 			if guess[charPos] == solution[charPosInSolution] {
-				// check if the solution character has previously been marked as a correct match
-				if used[charPosInSolution] == true {
-					continue
-				}
 				result[charPos] = wrongPosition
 				used[charPos] = true
 			}
