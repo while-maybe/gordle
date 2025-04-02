@@ -2,6 +2,7 @@ package gordle
 
 import (
 	"fmt"
+	"math/rand/v2"
 	"os"
 	"strings"
 )
@@ -23,4 +24,11 @@ func ReadCorpus(path string) ([]string, error) {
 	words := strings.Fields(string(data))
 
 	return words, nil
+}
+
+// pickWord returns a random word from the corpus
+func pickWord(corpus []string) string {
+	index := rand.IntN(len(corpus))
+
+	return corpus[index]
 }
