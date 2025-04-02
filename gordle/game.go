@@ -95,7 +95,7 @@ func computeFeedback(guess, solution []rune) feedback {
 	}
 
 	// check for correct letters
-	for charPos, _ := range guess {
+	for charPos := range guess {
 		if guess[charPos] == solution[charPos] {
 			result[charPos] = correctPosition
 			used[charPos] = true
@@ -103,22 +103,23 @@ func computeFeedback(guess, solution []rune) feedback {
 	}
 
 	// look for letters in the wrong position
-	for charPos, _ := range guess {
+	for charPos := range guess {
 		// if the character at this position has already been used move on
-		if used[charPos] {
+		if result[charPos] != absentCharacter {
 			continue
 		}
 
-		for charPosInSolution, _ := range solution {
+		for charPosInSolution := range solution {
 			// check if the pos of the solution char has already been used
 			if used[charPosInSolution] {
 				continue
 			}
 
-			// if the guess character matches the one in solution (but not in same position as the solution character)
+			// if the guess character matches the one in solution (but not in right position)
 			if guess[charPos] == solution[charPosInSolution] {
 				result[charPos] = wrongPosition
-				used[charPos] = true
+				used[charPosInSolution] = true
+				break
 			}
 		}
 	}
