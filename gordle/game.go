@@ -36,6 +36,11 @@ func (g *Game) Play() {
 
 		// ask for a valid word
 		guess := g.ask()
+
+		// give user some feedback on current attempt
+		feedback := computeFeedback(guess, g.solution)
+		fmt.Println(feedback.String())
+
 		if slices.Equal(guess, g.solution) {
 			fmt.Printf("🎉 You won! you found it in %d guess(es)! The word was: %s\n", currentAttempt, string(g.solution))
 			return
