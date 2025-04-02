@@ -1,6 +1,9 @@
 package gordle
 
-import "strings"
+import (
+	"slices"
+	"strings"
+)
 
 type hint byte
 
@@ -27,6 +30,14 @@ func (h hint) String() string {
 
 // feedback is a list of hints, one per character of the word.
 type feedback []hint
+
+func (fb feedback) Equal(other feedback) bool {
+	if len(fb) != len(other) || !slices.Equal(fb, other) {
+		return false
+	}
+
+	return true
+}
 
 // StringConcat is a naive implementation to build feedback as a string.
 // It is used only to benchmark it against the strings.Builder version.
