@@ -16,16 +16,20 @@ type Game struct {
 	maxAttempts int
 }
 
-// New returns a game, which can be used to Play!
-func New(playerInput io.Reader, solution string, maxAttempts int) *Game {
+// New returns a game variable, which can be used to Play!
+func New(reader io.Reader, corpus []string, maxAttempts int) (*Game, error) {
+
+	if len(corpus) == 0 {
+		return nil, ErrCorpusIsEmpty
+	}
 
 	g := &Game{
-		reader:      bufio.NewReader(playerInput),
-		solution:    splitToUppercaseCharacters(solution),
+		reader:      bufio.NewReader(reader),
+		solution:    []rune(strings.ToUpper(pickWord(corpus))), // picks a random word from the corpus
 		maxAttempts: maxAttempts,
 	}
 
-	return g
+	return g, nil
 }
 
 // Play runs the game.
